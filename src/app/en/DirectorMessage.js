@@ -115,7 +115,7 @@ export default function DirectorMessage() {
                 <span className={`block ${theme === 'dark'
                     ? 'text-white'
                     : 'text-[#01354d]'
-                  }`} style={{ fontFamily: '"Segoe Script", "Brush Script MT", cursive' }}>
+                  }`} style={{  }}>
                   Eng. Belkasem Hiftar
                 </span>
                 <span className={`text-sm tracking-wide uppercase ${theme === 'dark'

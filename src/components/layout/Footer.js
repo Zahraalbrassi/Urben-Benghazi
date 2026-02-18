@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ArrowUpRight, Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 
 const ACCENT = '#a68745';
@@ -100,6 +101,61 @@ function CtaButton({ href, variant = 'primary', children }) {
 }
 
 export default function Footer() {
+  const pathname = usePathname() || '/en';
+  const currentLocale = pathname.startsWith('/ar') ? 'ar' : 'en';
+  const base = `/${currentLocale}`;
+  const localized = (path = '') => `${base}${path}`;
+
+  const t =
+    currentLocale === 'ar'
+      ? {
+          brandName: 'المبادرة العالمية للتخطيط الحضري التنافسي',
+          brandTagline: 'المنصة الرسمية لـ GCUPI‑B',
+          brandDescription:
+            'دعم المبادرة العالمية للتخطيط الحضري التنافسي – بنغازي (GCUPI‑B) عبر البيانات والتعاون والحلول الحضرية الاستشرافية.',
+          location: 'بنغازي، ليبيا',
+          quickLinks: 'روابط سريعة',
+          sections: 'الأقسام',
+          connect: 'تواصل',
+          connectDesc: 'تابع آخر التحديثات والإعلانات.',
+          shareUpdates: 'شارك التحديثات الرسمية للمبادرة.',
+          home: 'الرئيسية',
+          about: 'حول',
+          keyFeatures: 'أبرز المميزات',
+          contact: 'تواصل',
+          directorMessage: 'رسالة المدير العام',
+          timeline: 'الخط الزمني',
+          dataResources: 'مصادر البيانات',
+          landmarks: 'المعالم',
+          contactTeam: 'تواصل مع الفريق',
+          backToTop: 'العودة للأعلى',
+          rights: 'جميع الحقوق محفوظة.',
+        }
+      : {
+          brandName: 'Urban Benghazi',
+          brandTagline: 'GCUPI-B official platform',
+          brandDescription:
+            'Supporting the Global Competitive Urban Planning Initiative – Benghazi (GCUPI-B) through data, collaboration, and forward-looking urban solutions.',
+          location: 'Benghazi, Libya',
+          quickLinks: 'Quick Links',
+          sections: 'Sections',
+          connect: 'Connect',
+          connectDesc: 'Follow updates and announcements.',
+          shareUpdates: 'Share official updates from the initiative.',
+          home: 'Home',
+          about: 'About',
+          keyFeatures: 'Key Features',
+          contact: 'Contact',
+          directorMessage: 'Director Message',
+          timeline: 'Timeline',
+          dataResources: 'Data Resources',
+          landmarks: 'Landmarks',
+          contactTeam: 'Contact the team',
+          backToTop: 'Back to top',
+          rights: 'All rights reserved.',
+        };
+
+  const logoSrc = `/${currentLocale}/logo pdf-08.png`;
   const year = new Date().getFullYear();
 
   return (
@@ -121,8 +177,8 @@ export default function Footer() {
           <div className="space-y-5 lg:col-span-5">
             <div className="flex items-center gap-4">
               <Image
-                src="/logo pdf-08.png"
-                alt="Urban Benghazi"
+                src={logoSrc}
+                alt={t.brandName}
                 width={200}
                 height={64}
                 sizes="200px"
@@ -130,14 +186,13 @@ export default function Footer() {
                 priority={false}
               />
               <div className="min-w-0">
-                <h2 className="truncate text-xl font-bold tracking-tight">Urban Benghazi</h2>
-                <p className="text-sm text-white/70">GCUPI-B official platform</p>
+                <h2 className="truncate text-xl font-bold tracking-tight">{t.brandName}</h2>
+                <p className="text-sm text-white/70">{t.brandTagline}</p>
               </div>
             </div>
 
             <p className="text-sm leading-6 text-white/75">
-              Supporting the Global Competitive Urban Planning Initiative – Benghazi (GCUPI-B) through data,
-              collaboration, and forward-looking urban solutions.
+              {t.brandDescription}
             </p>
 
             <div className="space-y-4 text-sm text-white/75">
@@ -147,7 +202,7 @@ export default function Footer() {
                   style={{ '--accent': ACCENT }}
                   aria-hidden="true"
                 />
-                <span>Benghazi, Libya</span>
+                <span>{t.location}</span>
               </div>
 
               <div className="flex items-start gap-3">
@@ -177,29 +232,29 @@ export default function Footer() {
           {/* Link columns */}
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-7">
             <div className="space-y-4">
-              <FooterHeading>Quick Links</FooterHeading>
+              <FooterHeading>{t.quickLinks}</FooterHeading>
               <ul className="space-y-2">
-                <li><FooterLink href="/en">Home</FooterLink></li>
-                <li><FooterLink href="/en#aboutsection">About</FooterLink></li>
-                <li><FooterLink href="/en#key-features">Key Features</FooterLink></li>
-                <li><FooterLink href="/en#contact">Contact</FooterLink></li>
+                <li><FooterLink href={localized('')}>{t.home}</FooterLink></li>
+                <li><FooterLink href={localized('#aboutsection')}>{t.about}</FooterLink></li>
+                <li><FooterLink href={localized('#key-features')}>{t.keyFeatures}</FooterLink></li>
+                <li><FooterLink href={localized('#contact')}>{t.contact}</FooterLink></li>
               </ul>
             </div>
 
             <div className="space-y-4">
-              <FooterHeading>Sections</FooterHeading>
+              <FooterHeading>{t.sections}</FooterHeading>
               <ul className="space-y-2">
-                <li><FooterLink href="/en#director-message">Director Message</FooterLink></li>
-                <li><FooterLink href="/en#historical-timeline">Timeline</FooterLink></li>
-                <li><FooterLink href="/en#data-resources">Data Resources</FooterLink></li>
-                <li><FooterLink href="/en#architectural-landmarks">Landmarks</FooterLink></li>
+                <li><FooterLink href={localized('#director-message')}>{t.directorMessage}</FooterLink></li>
+                <li><FooterLink href={localized('#historical-timeline')}>{t.timeline}</FooterLink></li>
+                <li><FooterLink href={localized('#data-resources')}>{t.dataResources}</FooterLink></li>
+                <li><FooterLink href={localized('#architectural-landmarks')}>{t.landmarks}</FooterLink></li>
               </ul>
             </div>
 
             <div className="space-y-4">
-              <FooterHeading>Connect</FooterHeading>
+              <FooterHeading>{t.connect}</FooterHeading>
               <p className="text-sm leading-6 text-white/75">
-                Follow updates and announcements.
+                {t.connectDesc}
               </p>
 
               <div className="flex items-center gap-3">
@@ -215,7 +270,7 @@ export default function Footer() {
               </div>
 
               <p className="text-xs text-white/60">
-                Share official updates from the initiative.
+                {t.shareUpdates}
               </p>
             </div>
           </div>
@@ -223,14 +278,14 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} Urban Benghazi. All rights reserved.</p>
+          <p>© {year} {t.brandName}. {t.rights}</p>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-            <Link href="/en#contact" className="hover:text-white underline-offset-4 hover:underline">
-              Contact the team
+            <Link href={localized('#contact')} className="hover:text-white underline-offset-4 hover:underline">
+              {t.contactTeam}
             </Link>
-            <Link href="/en" className="inline-flex items-center gap-2 text-white/70 hover:text-white">
-              Back to top <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            <Link href={localized('')} className="inline-flex items-center gap-2 text-white/70 hover:text-white">
+              {t.backToTop} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
         </div>

@@ -1,13 +1,62 @@
 'use client';
 
 import Link from 'next/link';
-import { useTheme } from '@/context/ThemeContext';
+import { usePathname } from 'next/navigation';
 import ThemeToggle from '@/components/ThemeToggle';
 
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Languages } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export function Header({ variant = 'default' }) {
+  const pathname = usePathname() || '/en';
+  const currentLocale = pathname.startsWith('/ar') ? 'ar' : 'en';
+  const base = `/${currentLocale}`;
+
+  const localized = (path = '') => `${base}${path}`;
+  const switchLocaleHref = (() => {
+    if (pathname.startsWith('/en')) return pathname.replace(/^\/en(?=\/|$)/, '/ar');
+    if (pathname.startsWith('/ar')) return pathname.replace(/^\/ar(?=\/|$)/, '/en');
+    return currentLocale === 'en' ? '/ar' : '/en';
+  })();
+  const switchLocaleLabel = currentLocale === 'en' ? 'العربية' : 'English';
+
+  // Locale-specific static assets live in public/en and public/ar
+  const logoScrolledSrc = `/${currentLocale}/logo pdf-06.png`;
+  const logoDefaultSrc = `/${currentLocale}/logo pdf-08.png`;
+
+  const labels =
+    currentLocale === 'ar'
+      ? {
+          home: 'الرئيسية',
+          about: 'حول',
+          history: 'التاريخ',
+          mission: 'الرسالة',
+          directorMessage: 'رسالة المدير العام',
+          initiative: 'المبادرة',
+          section1: 'القسم 1',
+          section2: 'القسم 2',
+          participation: 'المشاركة',
+          visitorRegistration: 'تسجيل الزوار',
+          investorRegistration: 'تسجيل المستثمرين',
+          exhibit: 'المعرض',
+          registerNow: 'سجل الآن',
+        }
+      : {
+          home: 'Home',
+          about: 'About',
+          history: 'History',
+          mission: 'Mission',
+          directorMessage: "FDRL's General Director Message",
+          initiative: 'Initiative',
+          section1: 'Section 1',
+          section2: 'Section 2',
+          participation: 'Participation',
+          visitorRegistration: 'Visitor Registration',
+          investorRegistration: 'Investor Registration',
+          exhibit: 'Exhibit',
+          registerNow: 'Register Now',
+        };
+
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,7 +79,6 @@ export function Header({ variant = 'default' }) {
 
   return (
     <>
-  
 
       <header className={`w-full border-b transition-colors duration-300 ${
   variant === 'overlay' 
@@ -47,45 +95,45 @@ export function Header({ variant = 'default' }) {
 }`}>
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
-            <Link href="/en" className="flex items-center">
+            <Link href={localized('')} className="flex items-center">
               {isScrolled ? (
-                <img src="/logo pdf-06.png" alt="Urban Benghazi" className="h-45 w-auto" />
+                <img src={logoScrolledSrc} alt="Urban Benghazi" className="h-45 w-auto" />
               ) : (
-                <img src="/logo pdf-08.png" alt="Urban Benghazi" className="h-45 w-auto" />
+                <img src={logoDefaultSrc} alt="Urban Benghazi" className="h-45 w-auto" />
               )}
             </Link>
 
             <nav className="hidden md:flex items-center space-x-8">
-              <Link href="/en" className="hover:text-[#a68745] transition-colors">Home</Link>
+              <Link href={localized('')} className="hover:text-[#a68745] transition-colors">{labels.home}</Link>
 
               <div className="relative">
                 <button
                   onClick={() => setIsAboutOpen(!isAboutOpen)}
                   className="hover:text-[#a68745] transition-colors flex items-center"
                 >
-                  About <ChevronDown size={14} className="ml-1" />
+                  {labels.about} <ChevronDown size={14} className="ml-1" />
                 </button>
                 {isAboutOpen && (
                   <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-2">
-                    <Link href="/en/about/history" className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">History</Link>
-                    <Link href="/en/about/mission" className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">Mission</Link>
+                    <Link href={localized('/about/history')} className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">{labels.history}</Link>
+                    <Link href={localized('/about/mission')} className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">{labels.mission}</Link>
                   </div>
                 )}
               </div>
 
-              <Link href="/en/director-message" className="hover:text-[#a68745] transition-colors">FDRL's General Director Message</Link>
+              <Link href={localized('/director-message')} className="hover:text-[#a68745] transition-colors">{labels.directorMessage}</Link>
 
               <div className="relative">
                 <button
                   onClick={() => setIsInitiativeOpen(!isInitiativeOpen)}
                   className="hover:text-[#a68745] transition-colors flex items-center"
                 >
-                  Initiative <ChevronDown size={14} className="ml-1" />
+                  {labels.initiative} <ChevronDown size={14} className="ml-1" />
                 </button>
                 {isInitiativeOpen && (
                   <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-2">
-                    <Link href="/en/initiative/section1" className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">Section 1</Link>
-                    <Link href="/en/initiative/section2" className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">Section 2</Link>
+                    <Link href={localized('/initiative/section1')} className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">{labels.section1}</Link>
+                    <Link href={localized('/initiative/section2')} className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">{labels.section2}</Link>
                   </div>
                 )}
               </div>
@@ -95,23 +143,33 @@ export function Header({ variant = 'default' }) {
                   onClick={() => setIsParticipationOpen(!isParticipationOpen)}
                   className="hover:text-[#a68745] transition-colors flex items-center"
                 >
-                  Participation <ChevronDown size={14} className="ml-1" />
+                  {labels.participation} <ChevronDown size={14} className="ml-1" />
                 </button>
                 {isParticipationOpen && (
                   <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-2">
-                    <Link href="/en/participation/visitor" className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">Visitor Registration</Link>
-                    <Link href="/en/participation/investor" className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">Investor Registration</Link>
+                    <Link href={localized('/participation/visitor')} className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">{labels.visitorRegistration}</Link>
+                    <Link href={localized('/participation/investor')} className="block px-4 py-2 text-sm text-[#01354d] hover:bg-gray-100">{labels.investorRegistration}</Link>
                   </div>
                 )}
               </div>
 
-              <Link href="/en/exhibit" className="hover:text-[#a68745] transition-colors">Exhibit</Link>
+              <Link href={localized('/exhibit')} className="hover:text-[#a68745] transition-colors">{labels.exhibit}</Link>
             </nav>
-            <ThemeToggle />
+
+            <div className="flex items-center gap-3">
+              <Link
+                href={switchLocaleHref}
+                className="hidden md:inline-flex items-center gap-2 rounded-md border border-gray-300/60 dark:border-white/20 px-3 py-2 text-sm hover:text-[#a68745] transition-colors"
+              >
+                <Languages size={16} />
+                <span>{switchLocaleLabel}</span>
+              </Link>
+              <ThemeToggle />
+            </div>
 
             <div className="hidden md:flex items-center space-x-4">
               <button className="bg-[#a68745] text-white px-4 py-2 rounded-md hover:bg-[#01354d] transition-colors">
-                Register Now
+                {labels.registerNow}
               </button>
             </div>
 
@@ -126,12 +184,16 @@ export function Header({ variant = 'default' }) {
           {isOpen && (
             <div className="md:hidden pb-4">
               <nav className="flex flex-col space-y-2">
-                <Link href="/en" className="py-2 hover:text-[#a68745] transition-colors">Home</Link>
-                <Link href="/en/about" className="py-2 hover:text-[#a68745] transition-colors">About</Link>
-                <Link href="/en/director-message" className="py-2 hover:text-[#a68745] transition-colors">FDRL's General Director Message</Link>
-                <Link href="/en/initiative" className="py-2 hover:text-[#a68745] transition-colors">Initiative</Link>
-                <Link href="/en/participation" className="py-2 hover:text-[#a68745] transition-colors">Participation</Link>
-                <Link href="/en/exhibit" className="py-2 hover:text-[#a68745] transition-colors">Exhibit</Link>
+                <Link href={localized('')} className="py-2 hover:text-[#a68745] transition-colors">{labels.home}</Link>
+                <Link href={localized('/about')} className="py-2 hover:text-[#a68745] transition-colors">{labels.about}</Link>
+                <Link href={localized('/director-message')} className="py-2 hover:text-[#a68745] transition-colors">{labels.directorMessage}</Link>
+                <Link href={localized('/initiative')} className="py-2 hover:text-[#a68745] transition-colors">{labels.initiative}</Link>
+                <Link href={localized('/participation')} className="py-2 hover:text-[#a68745] transition-colors">{labels.participation}</Link>
+                <Link href={localized('/exhibit')} className="py-2 hover:text-[#a68745] transition-colors">{labels.exhibit}</Link>
+                <Link href={switchLocaleHref} className="py-2 hover:text-[#a68745] transition-colors flex items-center gap-2">
+                  <Languages size={18} />
+                  {switchLocaleLabel}
+                </Link>
                 <div className="py-2">
                   <ThemeToggle />
                 </div>

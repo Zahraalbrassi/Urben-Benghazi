@@ -42,12 +42,12 @@ export default function Hero() {
         muted
         loop
         playsInline
-        poster="/logo pdf-05.png"
+        poster="/en/logo pdf-05.png"
         className="absolute inset-0 w-full h-full object-cover"
         style={{ filter: 'brightness(0.7)' }}
       >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-        <source src="/videos/HERO2.mp4" type="video/mp4" />
+        <source src="/en/videos/hero.mp4" type="video/mp4" />
+        <source src="/en/videos/HERO2.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
