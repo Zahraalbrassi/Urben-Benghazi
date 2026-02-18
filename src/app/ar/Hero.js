@@ -67,8 +67,9 @@ export default function Hero() {
           الإطلاق العالمي: نبني مستقبل بنغازي معًا
         </h1>
         <p className="text-xl md:text-2xl mb-8 max-w-2xl animate-fade-in-up animation-delay-200">
-          من الأحلام إلى الأسس — معًا
-        </p>
+من الأحلام إلى الواقع — نحققها معًا 
+
+  </p>
         <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-400">
         
           <a href="#aboutsection" className="border-2 border-[#a68745] text-[#a68745] hover:bg-[#a68745] hover:text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 animate-pulse text-center">

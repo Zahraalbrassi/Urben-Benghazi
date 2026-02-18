@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'أوربن بنغازي',
+  title: 'بنغازي الحضري',
   description: 'مبادرة التنمية الحضرية لمدينة بنغازي',
 };
 
